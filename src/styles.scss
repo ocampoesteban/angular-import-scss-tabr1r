@@ -1,11 +1,28 @@
 :root {
   --ideal-viewport-width: 1600;
+  --current-viewport-width: 100vw;
+  /*
+    Set our minimum and maximum allowed layout widths:
+  */
+  --min-viewport-width: 350px;
+  --max-viewport-width: 3840px;
+  /*
+    The clamp() function takes three comma separated expressions
+    as its parameter, in the order of minimum value, preferred value
+    and maximum value:
+  */
+  --clamped-viewport-width: clamp(
+      var(--min-viewport-width),
+      var(--current-viewport-width),
+      var(--max-viewport-width)
+    ) / var(--ideal-viewport-width);
 }
 
+/*
+  Use the clamped viewport width in our calculation
+*/
 @function scaleValue($value) {
-  @return calc(
-    #{$value} * (clamp(350px, 100vw, 3840px) / var(--ideal-viewport-width))
-  );
+  @return calc(#{$value} * (var(--clamped-viewport-width)));
 }
 
 * {
@@ -22,10 +39,6 @@ button {
 body {
   font-family: 'Hind', sans-serif;
   background: #f2f2f2;
-}
-
-.root {
-  display: flex;
 }
 
 // Header -------------
